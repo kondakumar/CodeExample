@@ -55,8 +55,24 @@ pipeline {
                 echo "Successfully uploaded service image to staging repository with tags ${ImageNameTag}"
             }
         }
-
-	}
+       stage('Update Manifest') {
+                    echo 'Updating deployment scripts'
+           steps {
+             withCredentials([usernamePassword(credentialsId: 'github-cicd-user', variable: 'USERPASS')]) {
+               sh "git clone https://github.com/kondakumar/CodeExample-ops.git"
+               sh "cd CodeExample-ops"
+               dir('CodeExample-ops') {
+                 sh "sed -i 's/newTag.*/newTag: v${BUILD_NUMBER}/g' overlays/*/*kustomization.yaml"
+                 sh "git config user.email kumar9.konda@gmail.com"
+                 sh "git config user.name kondakumar"
+                 sh "git add https://github.com/kondakumar/CodeExample-ops/overlays/*/*kustomization.yaml"
+                 sh "git commit -m 'Update image version to: ${BUILD_NUMBER}'"
+                 sh"git push https://$USERPASS@github.com/kondakumar/CodeExample-ops.git HEAD:main -f"
+               }
+             }
+           }
+       }
+	 }
 }
 
   post {
