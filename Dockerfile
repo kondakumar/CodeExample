@@ -1,7 +1,7 @@
 #Stage1
 FROM maven:3.8.5-openjdk-17-slim  AS build
 
-WORKDIR /Users/i342774/Downloads/CodeExample/
+WORKDIR /Users/i342774/Desktop/CodeExample/
 
 COPY src /usr/local/lib/src
 COPY pom.xml /usr/local/lib
