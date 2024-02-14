@@ -1,13 +1,11 @@
 #Stage1
 FROM maven:3.8.5-openjdk-17-slim  AS build
 
-WORKDIR /Users/i342774/Desktop/CodeExample/
-
-COPY src /usr/local/lib/src
-COPY pom.xml /usr/local/lib
+COPY /Users/i342774/Desktop/CodeExample/src /usr/local/lib/src
+COPY /Users/i342774/Desktop/CodeExample/pom.xml /usr/local/lib
 
 WORKDIR /usr/local/lib
-
+c
 RUN mvn -f ./pom.xml clean package
 
 FROM docker.wdf.sap.corp:51277/build-agent/sapmachine:17.0.6-1 as JarBuilder
